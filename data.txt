@@ -1,0 +1,1 @@
+{"temperature": [36, 35, 35.9, 37], "nausea": ["yes", "no", "no", "yes"], "lumbar_pain": ["no", "yes", "yes", "no"], "urine_pushing": ["no", "no", "yes", "yes"], "micturition_pain": ["no", "yes", "yes", "no"], "burning_swelling_urethra": ["yes", "no", "yes", "yes"]}
