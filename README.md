@@ -63,8 +63,10 @@ str(data)
 library(reshape)
 library(ggplot2)
 ggplot(data, aes(x = temperature, fill = diagnosis)) + 
-  geom_histogram(alpha = 0.4, color = 'grey80', binwidth = 0.4) +
-  scale_fill_brewer(palette = 'Set1')
+  geom_density(alpha = 0.6, color = 'white', size = 0.5) +
+  scale_fill_brewer(palette = 'Set1') +
+  theme_minimal() +
+  facet_wrap(~ diagnosis, ncol = 1)
 ```
 
 ![](machine_learning_api_files/figure-markdown_github/visuals-1.png)
