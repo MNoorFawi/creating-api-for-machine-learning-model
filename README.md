@@ -199,4 +199,4 @@ curl -X POST localhost:8080/diagnose \
 
 ### we can connect the model with whatever application so easily now.
 
-N.B. many forms can be returned using **plumber** but I prefer a dictionary of dictionaries because it makes more sense to have a name for the whole data especially when the data sent and returned are of many variables.
+N.B. many forms can be returned using **plumber** but I prefer a dictionary of dictionaries because it makes more sense to have a name for the whole data especially when the data sent and returned are of many variables. 
