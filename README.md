@@ -102,7 +102,7 @@ rpart.plot(tree_model)
 
 ![](machine_learning_api_files/figure-markdown_github/model-1.png) our model is such a great one.
 
-let's create the **API** using the **plumber** package first we save the model to load it later in the script of the API.
+let's create the **API** using the [**plumber**](https://www.rplumber.io/) package first we save the model to load it later in the script of the API.
 
 ``` r
 save(tree_model, file = 'tree_model.RData')
@@ -157,13 +157,16 @@ data = {"temperature" : [36, 35, 35.9, 37],
         "urine_pushing": ['no', 'no', 'yes', 'yes'],
         "micturition_pain": ['no', 'yes', 'yes', 'no'],
         'burning_swelling_urethra': ['yes', 'no', 'yes', 'yes']}
+        
 data = json.dumps(data)
 ## writing the data to disk to use it later with command line
 with open('data.txt', 'w') as f:
     json.dump(ast.literal_eval(data), f)
+    
 headers = {'content-type': 'application/json'}
 url = 'http://localhost:8080/diagnose'
 r = requests.post(url, data = data, headers = headers)
+
 d = json.loads(r.content)
 result = ast.literal_eval(d['diagnosis'])
 result
@@ -187,12 +190,27 @@ well, it works fine. now we have a model implemented with R and its results can 
 let's experiment it with the command line.
 
 ``` bash
-curl -X POST localhost:8080/diagnose \ 
+curl -s -X POST localhost:8080/diagnose \ 
 -d @data.txt -H 'Content:Type: application/json'
 
 ## {"diagnosis":
 ##    "[{"diagnosis":"none"},{"diagnosis":"none"},
-##    {"diagnosis":"none"},{"diagnosis":"urinary"}]"}
+##      {"diagnosis":"none"},{"diagnosis":"urinary"}]"}
+```
+
+To operate over it using some command line tools, for example to transform this json output into csv format.
+
+``` bash
+curl -s -X POST localhost:8080/diagnose \
+-d @data.txt -H 'Content:Type: application/json' \
+| jq -r '.[]' | json2csv | csvlook
+
+## | diagnosis |
+## | --------- |
+## | none      |
+## | none      |
+## | none      |
+## | urinary   |
 ```
 
 ### our model is working fine from everywhere else not only R where it was implemented.
