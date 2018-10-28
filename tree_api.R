@@ -20,3 +20,13 @@ diagnose <- function(
   lst <- list(diagnosis = d)
   return(lst)
 }
+
+#* @get /vimp
+vimp <- function(){
+  importance <- round(tree_model$variable.importance, 2)
+  variable <- names(importance)
+  varimp <- data.frame(variable, importance)
+  rownames(varimp) <- NULL
+  list(varimp)
+}
+
