@@ -30,3 +30,13 @@ vimp <- function(){
   list(varimp)
 }
 
+
+## another way to do the post method for diagnosis
+# diagnosis <- predict(tree_model, data, type = 'class')
+# list(data.frame(diagnosis))
+# }
+
+## this can go exactly the same way we did in command line to parse it,
+## and with python we will not use "ast.literal_eval(d['key'])
+## we will do "pd.DataFrame(d[0])" instead.
+
