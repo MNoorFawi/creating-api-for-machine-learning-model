@@ -21,3 +21,16 @@ d
 ## converting it to pandas DataFrame to further analysis
 pd.DataFrame(d['results'])
 
+## get method to get the importance of each variable
+# url = 'http://localhost:8080/vimp'
+# r = requests.get(url)
+# d = json.loads(r.content)
+# pd.DataFrame(d[0])
+#    importance                  variable
+# 0       53.52               temperature
+# 1       41.02             urine_pushing
+# 2       26.75               lumbar_pain
+# 3       15.27                    nausea
+# 4        5.98  burning_swelling_urethra
+# 5        0.53          micturition_pain
+
