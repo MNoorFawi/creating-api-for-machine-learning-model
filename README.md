@@ -133,6 +133,16 @@ diagnose <- function(
   lst <- list(results = d)
   return(lst)
 }
+
+## get method to extract "variable importance" from the model
+#* @get /vimp
+vimp <- function(){
+  importance <- round(tree_model$variable.importance, 2)
+  variable <- names(importance)
+  varimp <- data.frame(variable, importance)
+  rownames(varimp) <- NULL
+  list(varimp)
+}
 ```
 
 now we have everything done. let's experiment it.
@@ -173,10 +183,10 @@ d
 pd.DataFrame(d['results'])
 
 ## {'results':
-## [{'diagnosis': 'none'},
-## {'diagnosis': 'none'},
-## {'diagnosis': 'none'},
-## {'diagnosis': 'urinary'}]}
+##    [{'diagnosis': 'none'},
+##     {'diagnosis': 'none'},
+##     {'diagnosis': 'none'},
+##     {'diagnosis': 'urinary'}]}
 
 ##   diagnosis
 ## 0      none
@@ -212,9 +222,53 @@ curl -s -X POST localhost:8080/diagnose \
 ## | none      |
 ## | urinary   |
 ```
+We can also send a get request to get the importance of each variable in the model.
+
+``` bash
+curl -s localhost:8080/vimp
+# [
+#   [
+#     {
+#       "variable": "temperature",
+#       "importance": 53.52
+#     },
+#     {
+#       "variable": "urine_pushing",
+#       "importance": 41.02
+#     },
+#     {
+#       "variable": "lumbar_pain",
+#       "importance": 26.75
+#     },
+#     {
+#       "variable": "nausea",
+#       "importance": 15.27
+#     },
+#     {
+#       "variable": "burning_swelling_urethra",
+#       "importance": 5.98
+#     },
+#     {
+#       "variable": "micturition_pain",
+#       "importance": 0.53
+#     }
+#     ]
+#   ]
+
+curl -s localhost:8080/vimp | jq -r '.[]' | json2csv | csvlook
+  # | variable                 | importance |
+  # | ------------------------ | ---------- |
+  # | temperature              |      53.52 |
+  # | urine_pushing            |      41.02 |
+  # | lumbar_pain              |      26.75 |
+  # | nausea                   |      15.27 |
+  # | burning_swelling_urethra |       5.98 |
+  # | micturition_pain         |       0.53 |
+```  
 
 ### our model is working fine from everywhere else not only R where it was implemented.
 
 ### we can connect the model with whatever application so easily now.
 
 N.B. many forms can be returned using **plumber** but I prefer a dictionary of list of dictionaries because it makes more sense to have a name for the whole data especially when the data sent and returned are of many variables. 
+
