@@ -16,8 +16,8 @@ diagnose <- function(
     burning_swelling_urethra = burning_swelling_urethra
   )
   diagnosis <- predict(tree_model, data, type = 'class')
-  d = unbox(toJSON(data.frame(diagnosis)))
-  lst <- list(diagnosis = d)
+  d <- data.frame(diagnosis)
+  lst <- list(results = d)
   return(lst)
 }
 
@@ -33,10 +33,12 @@ vimp <- function(){
 
 ## another way to do the post method for diagnosis
 # diagnosis <- predict(tree_model, data, type = 'class')
-# list(data.frame(diagnosis))
-# }
+# d <- unbox(toJSON(data.frame(diagnosis)))
+# lst <- list(diagnosis = d)
+# return(lst)
+#}
 
 ## this can go exactly the same way we did in command line to parse it,
-## and with python we will not use "ast.literal_eval(d['key'])
-## we will do "pd.DataFrame(d[0])" instead.
+## and with python we will use "ast.literal_eval(d['key'])
+## before "pd.DataFrame(d)".
 
