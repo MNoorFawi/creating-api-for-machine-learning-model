@@ -17,7 +17,7 @@ headers = {'content-type': 'application/json'}
 url = 'http://localhost:8080/diagnose'
 r = requests.post(url, data = data, headers = headers)
 d = json.loads(r.content)
-result = ast.literal_eval(d['diagnosis'])
-result
+d
 ## converting it to pandas DataFrame to further analysis
-pd.DataFrame(result)
+pd.DataFrame(d['results'])
+
