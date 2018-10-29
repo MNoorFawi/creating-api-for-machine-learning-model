@@ -129,8 +129,8 @@ diagnose <- function(
     burning_swelling_urethra = burning_swelling_urethra
   )
   diagnosis <- predict(tree_model, data, type = 'class')
-  d = unbox(toJSON(data.frame(diagnosis)))
-  lst <- list(diagnosis = d)
+  d <- data.frame(diagnosis)
+  lst <- list(results = d)
   return(lst)
 }
 ```
@@ -168,15 +168,15 @@ url = 'http://localhost:8080/diagnose'
 r = requests.post(url, data = data, headers = headers)
 
 d = json.loads(r.content)
-result = ast.literal_eval(d['diagnosis'])
-result
+d
 ## converting it to pandas DataFrame to further analysis
-pd.DataFrame(result)
+pd.DataFrame(d['results'])
 
+## {'results':
 ## [{'diagnosis': 'none'},
 ## {'diagnosis': 'none'},
 ## {'diagnosis': 'none'},
-## {'diagnosis': 'urinary'}]
+## {'diagnosis': 'urinary'}]}
 
 ##   diagnosis
 ## 0      none
@@ -193,7 +193,7 @@ let's experiment it with the command line.
 curl -s -X POST localhost:8080/diagnose \ 
 -d @data.txt -H 'Content:Type: application/json'
 
-## {"diagnosis":
+## {"results":
 ##    "[{"diagnosis":"none"},{"diagnosis":"none"},
 ##      {"diagnosis":"none"},{"diagnosis":"urinary"}]"}
 ```
@@ -217,4 +217,4 @@ curl -s -X POST localhost:8080/diagnose \
 
 ### we can connect the model with whatever application so easily now.
 
-N.B. many forms can be returned using **plumber** but I prefer a dictionary of dictionaries because it makes more sense to have a name for the whole data especially when the data sent and returned are of many variables. 
+N.B. many forms can be returned using **plumber** but I prefer a dictionary of list of dictionaries because it makes more sense to have a name for the whole data especially when the data sent and returned are of many variables. 
